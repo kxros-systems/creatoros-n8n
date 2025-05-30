@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: creatoros-n8n
+    env: docker
+    healthCheckPath: /healthz
+    envVars:
+      - key: N8N_BASIC_AUTH_ACTIVE
+        value: true
+      - key: N8N_BASIC_AUTH_USER
+        value: admin
+      - key: N8N_BASIC_AUTH_PASSWORD
+        generateValue: true
+      - key: N8N_HOST
+        fromService:
+          type: web
+          name: creatoros-n8n
+          property: host
+      - key: WEBHOOK_URL
+        fromService:
+          type: web
+          name: creatoros-n8n
+          property: hostUrl
+      - key: N8N_EDITOR_BASE_URL
+        fromService:
+          type: web
+          name: creatoros-n8n
+          property: hostUrl
+    disk:
+      name: n8n-data
+      mountPath: /home/node/.n8n
+      sizeGB: 1
